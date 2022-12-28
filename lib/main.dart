@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/screen/new_contact.dart';
+
+import 'models/contact.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,41 +27,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Contact {
-  final String name;
 
-  const Contact({required this.name});
-}
 
-class ContactBook {
-  //make a singleton class
-  ContactBook._sharedInstance();
 
-  static final ContactBook _shared = ContactBook._sharedInstance();
-
-  factory ContactBook() => _shared;
-
-  // storage for the contact
-  final List<Contact> _contact = [
-    Contact(name: 'Mahnoor'),
-    Contact(name: 'Hamza'),
-    Contact(name: 'Owais')
-  ];
-
-// get length of the contact
-  int get length => _contact.length;
-
-  void add({required Contact contact}) {
-    _contact.add(contact);
-  }
-
-  void remove({required Contact contact}) {
-    _contact.remove(contact);
-  }
-
-  Contact? contact({required int atIndex}) =>
-      _contact.length > atIndex ? _contact[atIndex] : null;
-}
 
 class MyHome extends StatelessWidget {
   MyHome({Key? key}) : super(key: key);
@@ -70,14 +41,31 @@ class MyHome extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Contact Book'),
       ),
-      body: ListView.builder(
-          itemCount: contactBook.length,
-          itemBuilder: (context, int index) {
-            final contact = contactBook.contact(atIndex: index)!;
-            return ListTile(
-              title: Text(contact.name),
-            );
-          }),
+      body: ValueListenableBuilder(
+        valueListenable: ContactBook(),
+        builder: (contact , value , child){
+          final contacts = value as List<Contact>;
+        return  ListView.builder(
+            itemCount: contacts.length,
+            itemBuilder: (context, int index) {
+              final contact = contacts[index];
+              return Dismissible(
+                onDismissed:(Direction){
+                  ContactBook().remove(contact: contact);
+                } ,
+                key: ValueKey(contact.id),
+                child: Material(
+                  color: Colors.white,
+                  elevation: 7.0,
+                  child: ListTile(
+                    title: Text(contact.name),
+                  ),
+                ),
+              );
+            });
+        }
+
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await Navigator.of(context).pushNamed('/new_contact');
@@ -88,49 +76,3 @@ class MyHome extends StatelessWidget {
   }
 }
 
-class NewContactViewState extends StatefulWidget {
-  const NewContactViewState({Key? key}) : super(key: key);
-
-  @override
-  State<NewContactViewState> createState() => _NewContactViewStateState();
-}
-
-class _NewContactViewStateState extends State<NewContactViewState> {
-  late final TextEditingController _controller;
-
-  @override
-  void initState() {
-    _controller = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add New Contact'),
-      ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              hintText: ' Enter a new contact name...',
-            ),
-          ),
-          TextButton(onPressed: (){
-            final contact = Contact(name: _controller.text);
-            ContactBook().add(contact: contact);
-            Navigator.of(context).pop();
-          }, child: const Text('Add contact'))
-        ],
-      ),
-    );
-  }
-}
