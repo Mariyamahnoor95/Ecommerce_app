@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/screen/new_contact.dart';
+import 'package:food_delivery_app/widgets/app_button.dart';
 
+import 'data/data_source/base_client.dart';
 import 'models/contact.dart';
+import 'models/user_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: MyHome(),
+      home:HomeForRestApi() ,
       routes: {
         '/new_contact':(context)=> const NewContactViewState(),
       },
@@ -28,51 +31,89 @@ class MyApp extends StatelessWidget {
 }
 
 
-
-
-
-class MyHome extends StatelessWidget {
-  MyHome({Key? key}) : super(key: key);
+class HomeForRestApi extends StatelessWidget {
+  const HomeForRestApi({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final contactBook = ContactBook();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Contact Book'),
-      ),
-      body: ValueListenableBuilder(
-        valueListenable: ContactBook(),
-        builder: (contact , value , child){
-          final contacts = value as List<Contact>;
-        return  ListView.builder(
-            itemCount: contacts.length,
-            itemBuilder: (context, int index) {
-              final contact = contacts[index];
-              return Dismissible(
-                onDismissed:(Direction){
-                  ContactBook().remove(contact: contact);
-                } ,
-                key: ValueKey(contact.id),
-                child: Material(
-                  color: Colors.white,
-                  elevation: 7.0,
-                  child: ListTile(
-                    title: Text(contact.name),
-                  ),
-                ),
-              );
-            });
-        }
+      backgroundColor: const Color(0xFF1E1E1E),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const FlutterLogo(size: 72),
+              AppButton(
+                operation: 'GET',
+                operationColor: Colors.lightGreen,
+                description: 'Fetch users',
+                onPressed: () async {
+                  var response = await BaseClient().get('/users').catchError((err) {});
+                  if (response == null) return;
+                  debugPrint('successful:');
 
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.of(context).pushNamed('/new_contact');
-        },
-        child: const Icon(Icons.add),
+                  var users = userFromJson(response);
+                  debugPrint('Users count: ' + users.length.toString());
+                },
+              ),
+              AppButton(
+                operation: 'POST',
+                operationColor: Colors.lightBlue,
+                description: 'Add user',
+                onPressed: () async {
+                  var user = User(
+                    name: 'Afzal ',
+                    qualifications: [
+                      Qualification(degree: 'Maste', completionData: '01-01-2025'),
+                    ],
+                  );
+
+                  var response = await BaseClient().post('/users', user).catchError((err) {});
+                  if (response == null) return;
+                  debugPrint('successful:');
+                },
+              ),
+              AppButton(
+                operation: 'PUT',
+                operationColor: Colors.orangeAccent,
+                description: 'Edit user',
+                onPressed: () async {
+                  var id = 4;
+                  var user = User(
+                    name: 'Afzal ',
+                    qualifications: [
+                      Qualification(degree: 'Ph.D', completionData: '01-01-2028'),
+                    ],
+                  );
+
+                  var response = await BaseClient().put('/users/$id', user).catchError((err) {});
+                  if (response == null) return debugPrint('put error');
+                  debugPrint('successful:');
+                  debugPrint('successful call:');
+                },
+              ),
+              AppButton(
+                operation: 'DEL',
+                operationColor: Colors.red,
+                description: 'Delete user',
+                onPressed: () async {
+                  var id = 42;
+                  var response = await BaseClient().delete('/users/$id').catchError((err) {});
+                  if (response == null) return print('error');
+                  debugPrint('successful:vvdfdfdf');
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
-}
+  }
+
+
+
+
+
 
