@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-
+// codex tutorial
 class ServerException implements Exception {}
 
 const String baseUrl = 'https://631c37911b470e0e12fcdd0b.mockapi.io/api';
@@ -17,10 +17,11 @@ abstract class BaseClientabs {
   Future<dynamic> delete(String api);
 }
 
-class BaseClient {
+class BaseClient implements BaseClientabs {
   var client = http.Client();
 
 
+  @override
   Future<dynamic> get(String api) async {
     var url = Uri.parse(baseUrl + api);
   var response = await client.get(url, headers: _headers);
@@ -33,6 +34,7 @@ class BaseClient {
   }
 // POST REQUEST
 
+  @override
   Future<dynamic> post(String api , dynamic object) async {
     var url = Uri.parse(baseUrl + api);
     var _payload = json.encode(object);
@@ -46,6 +48,7 @@ class BaseClient {
   }
 //PUT REQUEST
 
+  @override
   Future<dynamic> put(String api , dynamic object) async {
     var url = Uri.parse(baseUrl + api);
     var _payload = json.encode(object);
@@ -63,6 +66,7 @@ class BaseClient {
     }
   }
 
+  @override
   Future<dynamic> delete(String api) async{
     var url = Uri.parse(baseUrl + api);
     var _headers = {
