@@ -91,6 +91,10 @@ flutter:
     - family: VarelaRound
       fonts:
         - asset: assets/fonts/VarelaRound-Regular.ttf
+    - family: ShantellSans
+      fonts:
+        - asset: assets/fonts/ShantellSans-Regular.ttf
+
 
 
   # For details regarding fonts from package dependencies,

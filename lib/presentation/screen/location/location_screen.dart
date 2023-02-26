@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../../widgets/location_searchbox.dart';
+
 class LocationScreen extends StatelessWidget {
   const LocationScreen({Key? key}) : super(key: key);
   static const String routeName= '/location';
@@ -35,7 +37,7 @@ class LocationScreen extends StatelessWidget {
              children: [
                  Image.asset('images/543-pizza-1.svg.png',height: 40,),
                  SizedBox(width: 20,),
-                 Expanded(child: LocationSearchBox()),
+                 Expanded(child: LocationSearchBox(hinttext: 'Enter your location',)),
              ],
            ),
                )),
@@ -57,32 +59,4 @@ class LocationScreen extends StatelessWidget {
   }
 }
 
-class LocationSearchBox extends StatelessWidget {
-  const LocationSearchBox({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-       decoration: InputDecoration(
-         filled: true,
-         fillColor: Colors.white,
-         hintText: 'Enter your location',
-         suffixIcon: Icon(Icons.search),
-         contentPadding: const EdgeInsets.only(left: 20, bottom: 5, right: 5),
-         focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(10),
-           borderSide: BorderSide(color: Colors.pink),
-         ),
-         enabledBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(10),
-           borderSide: BorderSide(color: Colors.white),
-         )
-       ),
-          ),
-    );
-  }
-}
