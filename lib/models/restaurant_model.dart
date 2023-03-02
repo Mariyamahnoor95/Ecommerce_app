@@ -6,7 +6,7 @@ class Restaurant extends Equatable {
   final int id;
   final String imageUrl;
   final String name;
-  final List<String> tags;
+  final List<dynamic> tags;
   final List<MenuItem> menuItems;
   final int deliveryTime;
   final double deliveryFee;
@@ -30,8 +30,10 @@ class Restaurant extends Equatable {
     Restaurant(
         id: 1,
         imageUrl: 'images/burrito.jpg',
-        name: 'Burrito',
-        tags: ['burritos', 'italian'],
+        name: 'Burrito geleto',
+        tags: MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 1)
+        .map((menuItem) => menuItem.category).toSet().toList() ,
         menuItems: MenuItem.menuItems
             .where((menuItem) => menuItem.restaurantId == 1)
             .toList(),
@@ -42,7 +44,9 @@ class Restaurant extends Equatable {
         id: 2,
         imageUrl: 'images/burgerOclock.jpg',
         name: 'BurgerOclock',
-        tags: ['fries', 'burger'],
+        tags: MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 2)
+            .map((menuItem) => menuItem.category).toSet().toList() ,
         menuItems: MenuItem.menuItems
             .where((menuItem) => menuItem.restaurantId == 2)
             .toList(),
@@ -52,8 +56,10 @@ class Restaurant extends Equatable {
     Restaurant(
         id: 3,
         imageUrl: 'images/salmon.jpg',
-        name: 'Salmani',
-        tags: ['salmon', 'burger'],
+        name: 'Salmani creezy',
+        tags: MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 3)
+            .map((menuItem) => menuItem.category).toSet().toList() ,
         menuItems: MenuItem.menuItems
             .where((menuItem) => menuItem.restaurantId == 3)
             .toList(),
@@ -63,8 +69,10 @@ class Restaurant extends Equatable {
     Restaurant(
         id: 4,
         imageUrl: 'images/salmon.jpg',
-        name: 'Piggery',
-        tags: ['pizza', 'burger'],
+        name: 'Piggery stop',
+        tags: MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 4)
+            .map((menuItem) => menuItem.category).toSet().toList() ,
         menuItems: MenuItem.menuItems
             .where((menuItem) => menuItem.restaurantId == 4)
             .toList(),
