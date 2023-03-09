@@ -10,7 +10,7 @@ class CategoryBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Restaurant> restaurant = Restaurant.restaurant
+    final List<Restaurant> restaurant = Restaurant.restaurants
     .where((restaurant) => restaurant.tags.contains(category.name),)
     .toList();
     return InkWell(

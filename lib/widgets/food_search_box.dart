@@ -19,7 +19,7 @@ class FoodSearchBox extends StatelessWidget {
             )),
         SizedBox(width: 10,),
         Padding(
-          padding: const EdgeInsets.only(top: 13.0, bottom: 13.0),
+          padding: const EdgeInsets.only(top: 13.0, bottom: 13.0,right: 10),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -30,7 +30,9 @@ class FoodSearchBox extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.menu),
               color: Theme.of(context).primaryColor,
-              onPressed: (){},
+              onPressed: (){
+                Navigator.pushNamed(context, '/filter');
+              },
             ),
           ),
         )

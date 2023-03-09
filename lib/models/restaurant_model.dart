@@ -11,10 +11,12 @@ class Restaurant extends Equatable {
   final int deliveryTime;
   final double deliveryFee;
   final double distance;
+  final String priceCategory;
 
   const Restaurant(
       {required this.id,
-      required this.menuItems,
+        required this.priceCategory,
+        required this.menuItems,
       required this.imageUrl,
       required this.name,
       required this.tags,
@@ -24,9 +26,9 @@ class Restaurant extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, imageUrl, name, tags, deliveryTime, deliveryFee, distance];
+      [id, imageUrl, name, tags, deliveryTime, deliveryFee, distance, priceCategory];
 
-  static List<Restaurant> restaurant = [
+  static List<Restaurant> restaurants = [
     Restaurant(
         id: 1,
         imageUrl: 'images/burrito.jpg',
@@ -39,7 +41,9 @@ class Restaurant extends Equatable {
             .toList(),
         deliveryTime: 20,
         deliveryFee: 50.8,
+        priceCategory: '\$',
         distance: 0.1),
+
     Restaurant(
         id: 2,
         imageUrl: 'images/burgerOclock.jpg',
@@ -52,6 +56,7 @@ class Restaurant extends Equatable {
             .toList(),
         deliveryTime: 50,
         deliveryFee: 57.8,
+        priceCategory: '\$',
         distance: 0.2),
     Restaurant(
         id: 3,
@@ -65,6 +70,7 @@ class Restaurant extends Equatable {
             .toList(),
         deliveryTime: 60,
         deliveryFee: 60.8,
+        priceCategory: '\$\$',
         distance: 0.3),
     Restaurant(
         id: 4,
@@ -78,6 +84,21 @@ class Restaurant extends Equatable {
             .toList(),
         deliveryTime: 70,
         deliveryFee: 70.8,
+        priceCategory: '\$',
+        distance: 0.4),
+    Restaurant(
+        id: 5,
+        imageUrl: 'images/salmon.jpg',
+        name: 'Piggery stop',
+        tags: MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 4)
+            .map((menuItem) => menuItem.category).toSet().toList() ,
+        menuItems: MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 4)
+            .toList(),
+        deliveryTime: 70,
+        deliveryFee: 70.8,
+        priceCategory: '\$\$\$',
         distance: 0.4)
   ];
 }

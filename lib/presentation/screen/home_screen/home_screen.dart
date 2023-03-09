@@ -29,10 +29,10 @@ class HomeScreen extends StatelessWidget {
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
-                    itemCount: Category.category.length,
+                    itemCount: Category.categories.length,
                     itemBuilder: (context, index) {
                       return CategoryBox(
-                        category: Category.category[index],
+                        category: Category.categories[index],
                       );
                     }),
               ),
@@ -65,10 +65,10 @@ class HomeScreen extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  itemCount: Restaurant.restaurant.length,
+                  itemCount: Restaurant.restaurants.length,
                   itemBuilder: (context, index) {
                     return RestaurantCard(
-                        restaurant: Restaurant.restaurant[index]);
+                        restaurant: Restaurant.restaurants[index]);
                   }),
             )
           ],
